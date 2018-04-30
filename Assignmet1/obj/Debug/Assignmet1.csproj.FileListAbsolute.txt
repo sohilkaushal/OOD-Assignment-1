@@ -1,0 +1,14 @@
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\obj\Debug\Assignmet1.csprojResolveAssemblyReference.cache
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\obj\Debug\Assignmet1.csproj.CoreCompileInputs.cache
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\bin\Debug\Assignmet1.exe.config
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\bin\Debug\Assignmet1.exe
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\bin\Debug\Assignmet1.pdb
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\obj\Debug\Assignmet1.exe
+C:\Users\sohil\Desktop\Assignmet1\Assignmet1\obj\Debug\Assignmet1.pdb
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\bin\Debug\Assignmet1.exe.config
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\bin\Debug\Assignmet1.exe
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\bin\Debug\Assignmet1.pdb
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\obj\Debug\Assignmet1.csprojResolveAssemblyReference.cache
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\obj\Debug\Assignmet1.csproj.CoreCompileInputs.cache
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\obj\Debug\Assignmet1.exe
+C:\Users\sohil\Desktop\University\Object Oriented Programming\Assignmet1\Assignmet1\obj\Debug\Assignmet1.pdb
