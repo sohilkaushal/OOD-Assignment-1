@@ -10,10 +10,11 @@ namespace Assigment1
 {
     class Customer
     {
+        // Variables declared
         private string _FirstName, _LastName, _Address;
         private DateTime _DateofBirth;
         public string ContactNumber, Email;
-        
+        // Encapsulation applied
         public string FirstName
         {
             get => _FirstName;
@@ -40,18 +41,27 @@ namespace Assigment1
         List<Account> _ListOfAccounts= new List<Account>();
 
         public List<Account> ListOfAccounts => _ListOfAccounts;
-
+        // Constructor 1
         public Customer(string first_name, string last_name, string address, string date_of_birth,
             string contact_number, string email)
         {
-            FirstName = first_name;
-            LastName= last_name;
-            Address = address;
             DateofBirth = DateTime.ParseExact(date_of_birth, "dd/MM/yyyy", null);
-            ContactNumber = contact_number;
-            Email = email;
+            if (DateTime.Now.Year - DateofBirth.Year > 16)
+            {
+                FirstName = first_name;
+                LastName = last_name;
+                Address = address;
+                // Validation Checks for contact number length
+                if (contact_number.Length == 10)
+                    ContactNumber = contact_number;
+                else
+                    ContactNumber = "";
+                Email = email;
+            }
+            else
+                Console.WriteLine("Invalid Age.Please re run the program");
         }
-
+        // Constructor 2
         public Customer(string first_name, string last_name, string address, string date_of_birth)
         {
             _FirstName = first_name;
@@ -61,7 +71,7 @@ namespace Assigment1
             ContactNumber = "";
             Email = "";
         }
-        
+        // Constructor 3 => Copy Constructor
         public Customer(Customer customer)
         {
             _FirstName = customer.FirstName;
@@ -71,12 +81,12 @@ namespace Assigment1
             ContactNumber = customer.ContactNumber;
             Email = customer.Email;
         }
-
+        // Function for addition of account to a list of accounts
         public void AddAccount(Account account)
         {
             ListOfAccounts.Add(account);
         }
-
+        // This function calculates the sum of balance of all the accounts    
         public double SumBalance()
         {
             double sum = 0;
@@ -86,7 +96,7 @@ namespace Assigment1
             }
             return sum;
         }
-
+        // This method is used to override the ToString function to generate appropriate formatted output
         public override string ToString()
         {
             return "Name: " + FirstName + " " + LastName + "\t Address: " + Address + "\t DOB:" + DateofBirth.ToString("dd/MM/yyyy", null) + "\t Contact: " + ContactNumber + " "  + "\t Email: " + Email + " " + "\t Total balance: " + SumBalance().ToString("F1");
@@ -95,6 +105,7 @@ namespace Assigment1
 
     abstract class Account
     {
+        // Variables declared
         private static uint id = 1;
         private uint _ID = id++;
         public uint ID => _ID;  
@@ -104,6 +115,7 @@ namespace Assigment1
         private Customer _Owner;
         private static string CurrentDateString = DateTime.Now.ToString("dd/MM/yyyy", null);
         protected DateTime CurrentDate = DateTime.ParseExact(CurrentDateString, "dd/MM/yyyy", null);
+        // Encapsulation applied
         protected DateTime OpenedDate => _OpenedDate;
         protected DateTime ClosedDate => _ClosedDate;
         public bool Active => _Active;
@@ -113,7 +125,7 @@ namespace Assigment1
             set => _Balance = value;
         }
         public Customer Owner => _Owner;
-
+        // Constructor 1
         public Account(Customer owner, string opened_date, double balance)
         {
             _OpenedDate = DateTime.ParseExact(opened_date, "dd/MM/yyyy", null);
@@ -130,10 +142,11 @@ namespace Assigment1
             _Owner = owner;
             _Owner.AddAccount(this);
         }
+        // Constructor 2 : this constructor again calls constructor 1
         public Account(Customer owner, double balance) : this(owner, DateTime.Now.ToString("dd/MM/yyyy", null), balance)
         {
-        }
-
+        }    
+        // Function to close a given account
         public void Close()
         {
             string CurrentDateString = DateTime.Now.ToString("dd/MM/yyyy", null);
@@ -144,6 +157,8 @@ namespace Assigment1
                 _Active = false;
             }
         }
+        // Function to transfer funds in between accounts
+        // This function is overriden in derived class
         public virtual void Transfer(Account account, double amount)
         {
             if (_Active && account.Active && _Balance > amount)
@@ -152,19 +167,21 @@ namespace Assigment1
                 _Balance -= amount;
             }
         }
-
+        // Function to calculate interest 
+        // This function is overriden in derived class
         public virtual double CalculateInterest()
         {
             double interest = 0;
             return interest;
         }
-
+        // Function to update balance of an account
+        // This function is overriden in derived class
         public virtual void UpdateBalance()
         {
             double interest = CalculateInterest();
             _Balance += interest;
         }
-
+       // This method is used to override the ToString function to generate appropriate formatted output
        public override string ToString()
         {
            if (Active)
@@ -175,15 +192,19 @@ namespace Assigment1
 
     class Type1Account : Account
     {
+        // Variables declared
         private static double _AnnualRateOfInterest = 2.0;
+        // Variables encapsulated
         public static double AnnualRateOfInterest => _AnnualRateOfInterest;
-
+        // Constructor 1 for this class => this calls the constructor 1 form base class 
         public Type1Account(Customer owner, string opened_date, double balance) : base(owner, opened_date, balance)
         {
         }
+        // Constructor 2 for this class => this calls the constructor 2 form base class
         public Type1Account(Customer owner, double balance): base(owner, balance)
         {
         }
+        // Function to deposit a particular amount of money
         public void Deposit(double amount)
         {
             if (Active && amount > 0)
@@ -191,6 +212,7 @@ namespace Assigment1
                 Balance += amount;
             }
         }
+        // Function to withdraw from account 
         public void Withdraw(double amount)
         {
             if (Active && amount <= Balance)
@@ -198,7 +220,8 @@ namespace Assigment1
                 Balance -= amount;
             }   
         }
-
+        // Function to transfer funds in between two accounts
+        // This function overrides the function defined in base class account
         public override void Transfer(Account account, double amount)
         {
             if (amount > 0 && amount <= Balance && Active && account.Active)
@@ -207,10 +230,10 @@ namespace Assigment1
                 account.Balance += amount;
             }
         }
-
+        // Function to calculate interest
+        // This function overrides the function defined in base class account
         public override double CalculateInterest()
         {
-            
             int nDays;
             if (OpenedDate.Month != CurrentDate.Month)
                 nDays = CurrentDate.Day - 1;
@@ -223,9 +246,11 @@ namespace Assigment1
 
     class Type2Account : Account
     {
+        // Variables defined
         private double _MonthlyDeposit;
         private double _AnnualRateOfInterest = 3.0;
         private static double _DepositRate = 4.0;
+        // Encapsulation applied
         public double MonthlyDeposit
         {
             get => _MonthlyDeposit;
@@ -233,8 +258,16 @@ namespace Assigment1
         }
         public double AnnualRateOfInterest => _AnnualRateOfInterest;
         public double DepositRate => _DepositRate;
-        public Type2Account (Customer owner, string opened_date, double balance) : base (owner, opened_date, balance) {}
-        public Type2Account (Customer owner, double balance) : base(owner, balance) {}
+        // Constructor 1 for this class => this calls the constructor 1 form base class 
+        public Type2Account(Customer owner, string opened_date, double balance) : base(owner, opened_date, balance)
+        {
+        }
+        // Constructor 2 for this class => this calls the constructor 2 form base class 
+        public Type2Account(Customer owner, double balance) : base(owner, balance)
+        {
+        }
+        // Function to transfer funds in between two accounts
+        // This function overrides the function defined in base class account
         public override void Transfer (Account account, double ammount) 
         {
             if (Active && account.Active && Balance >= ammount && account.GetType() == typeof(Type1Account) && ammount > 0 && Owner == account.Owner) 
@@ -245,6 +278,8 @@ namespace Assigment1
             else 
                 Console.WriteLine();
         }
+        // Function to calculate interest
+        // This function overrides the function defined in base class account
         public override double CalculateInterest() 
         {
             int nDays; 
@@ -254,7 +289,9 @@ namespace Assigment1
                 nDays = CurrentDate.Day - OpenedDate.Day;          
             double interest = (AnnualRateOfInterest/365/100) * Balance * nDays + (_DepositRate/365/100 * nDays * MonthlyDeposit);
             return interest;
-        }
+        }        
+        // Function to update balance
+        // This function overrides the function defined in base class account
         public override void UpdateBalance() 
         {
             base.UpdateBalance();
@@ -276,7 +313,7 @@ namespace Assigment1
             Type1Account a3 = new Type1Account(c2, "20/03/2018", 0);
             Type2Account a4 = new Type2Account(c3, "04/03/2018", 2000);
             Type2Account a5 = new Type2Account(c3, 3000);
-            //
+            // Deposit and Transfer operations performed
             a1.Deposit(-200);
             a2.Transfer(a1, 6000);
             a2.Transfer(a1, 2000);
@@ -298,19 +335,23 @@ namespace Assigment1
             Console.WriteLine("Interest of a{0}: {1:F1}", a4.ID, a4.CalculateInterest());
             Console.WriteLine("Interest of a{0}: {1:F1}", a5.ID, a5.CalculateInterest());
             Console.WriteLine("\nUpdating Balance\n");
+            // Updating balance of accounts
             a1.UpdateBalance();
             a2.UpdateBalance();
             a3.UpdateBalance();
             a4.UpdateBalance();
             a5.UpdateBalance();
+            // Closing acconts
             a3.Close();
             a5.Close();
+            // Displaying Account's information
             Console.WriteLine("\nAccount's Information\n");
             Console.WriteLine(a1);
             Console.WriteLine(a2);
             Console.WriteLine(a3);
             Console.WriteLine(a4);
             Console.WriteLine(a5);
+            // Displaying Customer's information
             Console.WriteLine("\nCustomers' information");   
             Console.WriteLine(c1);
             Console.WriteLine(c2);
